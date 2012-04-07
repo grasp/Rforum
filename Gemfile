@@ -19,8 +19,8 @@ group :assets do
 end
 
 #this is for init_breadcrume....
-gem 'bootstrap-rails', :require => 'bootstrap-rails', :git => 'http://github.com/xdite/bootstrap-rails.git'
-
+#gem 'bootstrap-rails', :require => 'bootstrap-rails', :git => 'git://github.com/xdite/bootstrap-rails.git'
+gem 'bootstrap-rails', :require => 'bootstrap-rails', :path => '~/vob/github/bootstrap-rails'
 # 上传组件
 gem 'carrierwave', '0.5.7'
 gem 'carrierwave-mongoid', '0.1.2', :require => 'carrierwave/mongoid'
@@ -54,12 +54,10 @@ gem "redis-objects", "0.5.2"
 # Markdown 格式
 gem "redcarpet", "~> 2.0.0"
 gem 'hpricot', '~> 0.8.5'
-gem "pygments.rb", '~> 0.2.4'
+gem "pygments.rb", '0.2.8'
 
 # YAML 配置信息
 gem "settingslogic", "~> 2.0.6"
-
-
 
 # 队列
 gem "resque", "~> 1.20.0", :require => "resque/server"
@@ -67,7 +65,8 @@ gem "resque_mailer", '2.0.2'
 
 # AWS Simple Email Server
 gem "aws-ses", "~> 0.4.3"
-gem 'mail_view', :git => 'http://github.com/37signals/mail_view.git'
+#gem 'mail_view', :git => 'git://github.com/37signals/mail_view.git'
+gem 'mail_view', :path => '~/vob/github/mail_view'
 
 # 用于组合小图片
 gem "sprite-factory", "1.4.1"
@@ -76,9 +75,8 @@ gem "sprite-factory", "1.4.1"
 gem "social-share-button", "~> 0.0.3"
 
 # 表单 last commit: 2011-12-03
-gem 'simple_form', :git => "http://github.com/plataformatec/simple_form.git"
-gem 'bootstrap-rails', :require => 'bootstrap-rails', :git => 'http://github.com/xdite/bootstrap-rails.git'
-
+#gem 'simple_form', :git => "git://github.com/plataformatec/simple_form.git"
+gem 'simple_form',:path=>"~/vob/github/simple_form"
 # 全文搜索
 gem 'sunspot_rails',  "~> 1.3.0"
 gem 'sunspot_solr'
@@ -86,14 +84,14 @@ gem 'sunspot_solr'
 gem 'daemon-spawn'
 
 # 禁用 assets 日志
-gem 'quiet_assets', :git => 'http://github.com/AgilionApps/quiet_assets.git'
-
+#gem 'quiet_assets', :git => 'git://github.com/AgilionApps/quiet_assets.git'
+gem 'quiet_assets', :path=>"~/vob/github/quiet_assets"
 # Github API
 gem 'ruby-github'
 
 # API
-gem 'grape', :git => 'http://github.com/intridea/grape.git', :branch => 'frontier'
-
+#gem 'grape', :git => 'git://github.com/intridea/grape.git', :branch => 'frontier'
+gem 'grape',:path=>"~/vob/github/grape"
 group :development, :test do
   gem 'capistrano', '2.9.0'
   gem 'chunky_png', "1.2.5"

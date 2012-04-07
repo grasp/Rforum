@@ -7,15 +7,13 @@ describe "sign up and login" do
     visit '/ruser/account/sign_in'
    
     click_link '注册'
-
-   #  page.must_have_content('注册新用户')
-    #   save_and_open_page
+     save_and_open_page
     fill_in 'user_login', :with => 'rubyist8'
   #   save_and_open_page
     fill_in 'user_email', :with => 'rubyist@ruby-china.org'
     fill_in 'user_password', :with => 'coolguy'
     fill_in 'user_password_confirmation', :with => 'coolguy'
-    click_button '提交注册信息'
+    click_on '确定'  
     page.should have_content('活跃帖子')
     within("#userbar") do
       click_on 'rubyist'
@@ -46,3 +44,4 @@ describe "sign up and login" do
     page.should have_content('密码 不能为空字符')
   end
 end
+
