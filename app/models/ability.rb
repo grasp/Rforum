@@ -1,5 +1,5 @@
 #module Rforum
-class Rforum::Ability
+class Ability
   include CanCan::Ability
 
   def initialize(user)

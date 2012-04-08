@@ -37,8 +37,8 @@ class Rforum::Site
   end
   
   def check_uniq
- #   if Site.unscoped.or(:url => url).count > 0
-  if self.unscoped.or(:url => url).count > 0
+    if Rforum::Site.unscoped.or(:url => url).count > 0
+  #if self.unscoped.or(:url => url).count > 0
       self.errors.add(:url,"已经提交过了。")
       return false
     end

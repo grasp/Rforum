@@ -59,7 +59,7 @@ module Rforum::CellHelper
 
  # cache :index_locations, :expires_in => 1.days
   def index_locations
-    @hot_locations = Rforum::Location.hot.limit(12)
+    @hot_locations = Ruser::Location.hot.limit(12)
     render
   end
 end

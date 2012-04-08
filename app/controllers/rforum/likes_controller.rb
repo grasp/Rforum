@@ -17,7 +17,7 @@ class Rforum::LikesController < Rforum::RforumController
   def find_likeable
     @success = false
     @element_id = "likeable_#{params[:type]}_#{params[:id]}"
-    if not params[:type].in?(['Topic'])
+    if not params[:type].in?(['Rforum::Topic']) #is right?
       render :text => "-1"
       return false
     end

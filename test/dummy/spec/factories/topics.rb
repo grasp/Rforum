@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :topic do
+  factory :topic,:class => Rforum::Topic do
     title 'title'
     body 'body'
     association :user

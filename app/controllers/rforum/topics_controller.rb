@@ -2,8 +2,9 @@
 class Rforum::TopicsController <Rforum::RforumController
   include Rforum::CellHelper
   include Rforum::NotesHelper
+     include Rforum::Engine.routes.url_helpers
   layout "rtheme/rforum"
-  load_and_authorize_resource :only => [:new,:edit,:create,:update,:destroy],:class=>"Rfourm::Ability"
+  load_and_authorize_resource  :only => [:new,:edit,:create,:update,:destroy],:class=>"Rforum::Topic"
 
   before_filter :set_menu_active
   caches_page :feed, :node_feed, :expires_in => 1.hours
@@ -15,7 +16,7 @@ class Rforum::TopicsController <Rforum::RforumController
     @hot_locations = Ruser::Location.hot.limit(12) #ugly code 
     @suggest_topics = Rforum::Topic.suggest.limit(5)
     set_seo_meta("","#{Rforum::Setting.app_name}#{t("menu.topics")}")
-    drop_breadcrumb(t("topics.hot_topic"))
+    drop_breadcrumb(t("topics.hot_topic"),:use_route => :rforum)
     #render :stream => true
   end
 
@@ -29,7 +30,7 @@ class Rforum::TopicsController <Rforum::RforumController
     @node = Rforum::Node.find(params[:id])
     @topics = @node.topics.last_actived.fields_for_list.includes(:user).paginate(:page => params[:page],:per_page => 50)
     set_seo_meta("#{@node.name} &raquo; #{t("menu.topics")}","#{Rforum::Setting.app_name}#{t("menu.topics")}#{@node.name}",@node.summary)
-    drop_breadcrumb("#{@node.name}")
+    drop_breadcrumb("#{@node.name}",:use_route => :rforum)
     render :action => "index" #, :stream => true
   end
 
@@ -43,7 +44,7 @@ class Rforum::TopicsController <Rforum::RforumController
   def recent
     # TODO: 需要 includes :node,:user, :last_reply_user,但目前用了 paginate 似乎会使得 includes 没有效果
     @topics = Rforum::Topic.recent.fields_for_list.includes(:user).paginate(:page => params[:page], :per_page => 50)
-    drop_breadcrumb(t("topics.topic_list"))
+    drop_breadcrumb(t("topics.topic_list"),:use_route => :rforum)
     render :action => "index" #, :stream => true
   end
 
@@ -52,7 +53,7 @@ class Rforum::TopicsController <Rforum::RforumController
     ids = result.collect { |r| r["id"] }
     @topics = Rforum::Topic.where(:_id.in => ids).limit(50).includes(:node,:user, :last_reply_user)
     set_seo_meta("#{t("common.search")}#{params[:s]} &raquo; #{t("menu.topics")}")
-    drop_breadcrumb("#{t("common.search")} #{params[:key]}")
+    drop_breadcrumb("#{t("common.search")} #{params[:key]}",:use_route => :rforum)
     render :action => "index" #, :stream => true
   end
 
@@ -67,8 +68,8 @@ class Rforum::TopicsController <Rforum::RforumController
       current_user.notifications.where(:reply_id.in => @replies.map(&:id), :read => false).update_all(:read => true)
     end
     set_seo_meta("#{@topic.title} &raquo; #{t("menu.topics")}")
-    drop_breadcrumb("#{@node.name}", node_topics_path(@node.id))
-    drop_breadcrumb t("topics.read_topic")
+    drop_breadcrumb("#{@node.name}", rforum.node_topics_path(@node.id))
+    drop_breadcrumb(t("topics.read_topic"),:use_route => :rforum)
     # render :stream => true
   end
 
@@ -80,17 +81,17 @@ class Rforum::TopicsController <Rforum::RforumController
       if @node.blank?
         render_404
       end
-      drop_breadcrumb("#{@node.name}", node_topics_path(@node.id))
+      drop_breadcrumb("#{@node.name}", rforum.node_topics_path(@node.id))
     end
-    drop_breadcrumb t("topics.post_topic")
+    drop_breadcrumb(t("topics.post_topic"),:use_route => :rforum)
     set_seo_meta("#{t("topics.post_topic")} &raquo; #{t("menu.topics")}")
   end
 
   def edit
     @topic = Rforum::Topic.find(params[:id])
     @node = @topic.node
-    drop_breadcrumb("#{@node.name}", node_topics_path(@node.id))
-    drop_breadcrumb t("topics.edit_topic")
+    drop_breadcrumb("#{@node.name}", rforum.node_topics_path(@node.id))
+    drop_breadcrumb(t("topics.edit_topic"),:use_route => :rforum)
     set_seo_meta("#{t("topics.edit_topic")} &raquo; #{t("menu.topics")}")
   end
 
@@ -142,7 +143,7 @@ class Rforum::TopicsController <Rforum::RforumController
   end
 
   def init_base_breadcrumb
-    drop_breadcrumb(t("menu.topics"), topics_path)
+    drop_breadcrumb(t("menu.topics"), rforum.topics_path)
   end
 
   private

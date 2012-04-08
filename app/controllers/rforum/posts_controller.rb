@@ -1,5 +1,6 @@
 # coding: utf-8
 class  Rforum::PostsController <  Rforum:: RforumController
+   include Rforum::Engine.routes.url_helpers
   before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy]
   before_filter :set_menu_active
 
@@ -11,11 +12,11 @@ class  Rforum::PostsController <  Rforum:: RforumController
     @posts = scoped_posts.recent.paginate :page => params[:page], :per_page => 20
     set_seo_meta("文章")
 
-    drop_breadcrumb("文章")
+    drop_breadcrumb("文章",:use_route => :rforum)
     if params[:tag]
-      drop_breadcrumb(params[:tag])
+      drop_breadcrumb(params[:tag],:use_route => :rforum)
     else
-      drop_breadcrumb t("posts.recent_publish_post")
+      drop_breadcrumb(t("posts.recent_publish_post"),:use_route => :rforum)
     end
   end
 
@@ -23,8 +24,8 @@ class  Rforum::PostsController <  Rforum:: RforumController
     @post = Rforum::Post.find(params[:id])
     @post.hits.incr
     set_seo_meta("#{@post.title}")
-    drop_breadcrumb("文章")
-    drop_breadcrumb t("common.read")
+    drop_breadcrumb("文章",:use_route => :rforum)
+    drop_breadcrumb(t("common.read"),:use_route => :rforum)
   end
 
   def new
@@ -34,8 +35,8 @@ class  Rforum::PostsController <  Rforum:: RforumController
   def edit
     @post = Rforum::Post.find(params[:id])
     @post.tag_list = @post.tags.join(", ")
-    drop_breadcrumb("文章")
-    drop_breadcrumb t("common.edit")
+    drop_breadcrumb("文章",:use_route => :rforum)
+    drop_breadcrumb(t("common.edit"),:use_route => :rforum)
   end
 
   def create

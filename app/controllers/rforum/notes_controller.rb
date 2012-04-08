@@ -6,31 +6,31 @@ class Rforum::NotesController < Rforum::RforumController
   before_filter :init_base_breadcrumb
 
   def init_base_breadcrumb
-    drop_breadcrumb(t("menu.notes"), notes_path)
+    drop_breadcrumb(t("menu.notes"), rforum.notes_path)
   end
 
   def index
     @notes = current_user.notes.paginate(:page => params[:page], :per_page => 20)
     set_seo_meta t("menu.notes")
-    drop_breadcrumb("列表")
+    drop_breadcrumb("列表",:use_route => :rforum)
   end
 
   def show
     @note =  Rforum::Note.find(params[:id])
     set_seo_meta("查看 &raquo; #{t("menu.notes")}")
-    drop_breadcrumb("查看")
+    drop_breadcrumb("查看",:use_route => :rforum)
   end
 
   def new
     @note = current_user.notes.build
     set_seo_meta("新建 &raquo; #{t("menu.notes")}")
-    drop_breadcrumb(t("common.create"))
+    drop_breadcrumb(t("common.create"),:use_route => :rforum)
   end
 
   def edit
     @note = current_user.notes.find(params[:id])
     set_seo_meta("修改 &raquo; #{t("menu.notes")}")
-    drop_breadcrumb("修改")
+    drop_breadcrumb("修改",:use_route => :rforum)
   end
 
   def create

@@ -2,7 +2,7 @@
 # More info at https://github.com/guard/guard#readme
 
 
-guard 'rspec',:cli => "--drb", :version => 2  do
+guard 'rspec',:cli => "--drb --color --format doc", :version => 2  do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }
@@ -29,4 +29,9 @@ guard 'spork', :cucumber_env => { 'RAILS_ENV' => 'test' }, :rspec_env => { 'RAIL
   watch('spec/spec_helper.rb') { :rspec }
   watch('test/test_helper.rb') { :test_unit }
   watch(%r{features/support/}) { :cucumber }
+
+ #add watch for rforum/ruser/rthem change
+  watch('../../../app/controllers/rforum/(.+).rb')
+  watch('../../../app/models/rforum/(.+).rb')
+  watch('../../../app/helpers/rforum/(.+).rb')
 end

@@ -9,7 +9,7 @@ class Rforum::SearchController < Rforum::RforumController
     end
 
     set_seo_meta("#{t("common.search")}: #{params[:q]}")
-    drop_breadcrumb("#{t("common.search")}: #{params[:q]}")
+    drop_breadcrumb("#{t("common.search")}: #{params[:q]}",:use_route => :rforum)
   end
 
   def wiki
@@ -20,6 +20,6 @@ class Rforum::SearchController < Rforum::RforumController
     end
 
     set_seo_meta("WIKI#{t("common.search")}: #{params[:q]}")
-    drop_breadcrumb("WIKI#{t("common.search")}: #{params[:q]}")
+    drop_breadcrumb("WIKI#{t("common.search")}: #{params[:q]}",:use_route => :rforum)
   end
 end

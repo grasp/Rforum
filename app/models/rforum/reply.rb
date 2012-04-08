@@ -16,10 +16,11 @@ class Rforum::Reply
 
   belongs_to :user, :inverse_of => :replies,:class_name=>"Ruser::User"
   belongs_to :topic, :inverse_of => :replies,:class_name=>"Rforum::Topic"
-  has_many :notifications, :class_name => 'Notification::Base', :dependent => :delete
+ # has_many :notifications, :class_name => 'Notification::Base', :dependent => :delete
+ has_many :notifications, :class_name => 'Notification::Base', :dependent => :delete
 
-  counter_cache :name => :user, :inverse_of => :replies#,:class_name=>"Ruser::User"
-  counter_cache :name => :topic, :inverse_of => :replies#,:class_name=>"Rforum::Topic"
+  counter_cache :name => :user, :inverse_of => :replies,:class_name=>"Ruser::User"
+  counter_cache :name => :topic, :inverse_of => :replies,:class_name=>"Rforum::Topic"
 
   index :user_id
   index :topic_id
@@ -45,7 +46,7 @@ class Rforum::Reply
   def extract_mentioned_users
     logins = body.scan(/@(\w{3,20})/).flatten
     if logins.any?
-      self.mentioned_user_ids = User.where(:login => /^(#{logins.join('|')})$/i, :_id.ne => user.id).limit(5).only(:_id).map(&:_id).to_a
+      self.mentioned_user_ids = Ruser::User.where(:login => /^(#{logins.join('|')})$/i, :_id.ne => user.id).limit(5).only(:_id).map(&:_id).to_a
     end
   end
 
@@ -53,7 +54,7 @@ class Rforum::Reply
     # 用于作为缓存 key
     ids_md5 = Digest::MD5.hexdigest(self.mentioned_user_ids.to_s)
     Rails.cache.fetch("reply:#{self.id}:mentioned_user_logins:#{ids_md5}") do
-      User.where(:_id.in => self.mentioned_user_ids).only(:login).map(&:login)
+      Ruser::User.where(:_id.in => self.mentioned_user_ids).only(:login).map(&:login)
     end
   end
 
@@ -66,6 +67,7 @@ class Rforum::Reply
 
   def send_topic_reply_notification
     if self.user != topic.user && !mentioned_user_ids.include?(topic.user_id)
+      puts "topicid=#{topic.id}"
       Notification::TopicReply.create :user => topic.user, :reply => self
     end
   end
@@ -74,4 +76,10 @@ class Rforum::Reply
     super
     notifications.delete_all
   end
+  
+  #!!!!this is for pass the test , why factory girl need this sub method for Reply class?## a trap here
+  #manual test reply can pass
+  #def self.sub(a,b)
+    
+#  end
 end

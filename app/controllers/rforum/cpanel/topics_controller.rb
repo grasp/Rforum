@@ -54,16 +54,16 @@ class Rforum::Cpanel::TopicsController < Rforum::Cpanel::ApplicationController
   end
 
   def suggest
-    @topic = Topic.unscoped.find(params[:id])
+    @topic = Rforum::Topic.unscoped.find(params[:id])
     @topic.update_attribute(:suggested_at, Time.now)
-    CacheVersion.topic_last_suggested_at = Time.now
+    Rforum::CacheVersion.topic_last_suggested_at = Time.now
     redirect_to(cpanel_topics_path, :notice => "Topic:#{params[:id]} suggested.")
   end
 
   def unsuggest
     @topic = Rforum::Topic.unscoped.find(params[:id])
     @topic.update_attribute(:suggested_at, nil)
-    CacheVersion.topic_last_suggested_at = Time.now
+    Rforum::CacheVersion.topic_last_suggested_at = Time.now
     redirect_to(cpanel_topics_path, :notice => "Topic:#{params[:id]} unsuggested.")
   end
 end

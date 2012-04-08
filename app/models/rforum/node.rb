@@ -33,7 +33,7 @@ class Rforum::Node
 
   # 热门节电给 select 用的
   def self.node_collection
-    Rails.cache.fetch("node:node_collection:#{CacheVersion.section_node_updated_at}") do
+    Rails.cache.fetch("node:node_collection:#{Rforum::CacheVersion.section_node_updated_at}") do
       Node.all.collect { |n| [n.name,n.id] }
     end
   end

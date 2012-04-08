@@ -8,14 +8,14 @@ class Rforum::Cpanel::PostsController < Rforum::Cpanel::ApplicationController
   def show
     @post = Rforum::Post.unscoped.find(params[:id])
 
-    drop_breadcrumb("文章")
+    drop_breadcrumb("文章",:use_route => :rforum)
 
   end
 
   def new
     @post = Rforum::Post.new
-    drop_breadcrumb("文章")
-    drop_breadcrumb("创建")
+    drop_breadcrumb("文章",:use_route => :rforum)
+    drop_breadcrumb("创建",:use_route => :rforum)
   end
 
   def edit

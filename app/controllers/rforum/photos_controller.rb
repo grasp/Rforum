@@ -1,7 +1,7 @@
 # coding: utf-8
 class Rforum::PhotosController <  Rforum:: RforumController
 
-  load_and_authorize_resource
+  load_and_authorize_resource :class=>"Rforum::Photo"
 
   def tiny_new
     @photo = Rforum::Photo.new

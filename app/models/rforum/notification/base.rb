@@ -9,7 +9,7 @@ class Notification::Base
 
   scope :unread, where(:read => false)
 
-  belongs_to :user
+  belongs_to :user,:class_name=>"Ruser::User"
 
   index [[:user_id, Mongo::ASCENDING], [:read, Mongo::ASCENDING]]
 

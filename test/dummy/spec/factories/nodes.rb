@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :node do
+  factory :node ,:class => Rforum::Node do
     sequence(:name){|n| "name#{n}" }
     section { |s| s.association(:section) }
     summary 'summary'

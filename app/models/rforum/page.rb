@@ -24,7 +24,7 @@ class Rforum::Page
 
   index :slug
 
-  has_many :versions, :class_name => "PageVersion"
+  has_many :versions, :class_name => "Rforum::PageVersion"
 
   attr_accessor :user_id, :change_desc, :version_enable
   attr_accessible :title, :body, :slug, :change_desc
@@ -67,7 +67,7 @@ class Rforum::Page
     # 只有 body, title, slug 更改了才更新版本
     if self.body_changed? or self.title_changed? or self.slug_changed?
       self.inc(:version, 1)
-      PageVersion.create(:user_id => self.user_id,
+      Rforum::PageVersion.create(:user_id => self.user_id,
                          :page_id => self.id,
                          :desc => self.change_desc,
                          :version => self.version,
@@ -79,7 +79,7 @@ class Rforum::Page
 
   # 撤掉到指定版本
   def revert_version(version)
-    page_version = PageVersion.where(:page_id => self.id, :version => version).first
+    page_version = Rforum::PageVersion.where(:page_id => self.id, :version => version).first
     return false if page_version.blank?
     self.update_attributes(:body => page_version.body,
                            :title => page_version.title,
@@ -87,7 +87,7 @@ class Rforum::Page
   end
 
   def editors
-    User.where(:_id.in => self.editor_ids)
+    Ruser::User.where(:_id.in => self.editor_ids)
   end
 
   def self.find_by_slug(slug)

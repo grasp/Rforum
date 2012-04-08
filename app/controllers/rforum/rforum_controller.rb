@@ -2,6 +2,7 @@ module Rforum
   #class RforumController < ActionController::Base
   class RforumController < ApplicationController
       include Bootstrap::Breadcrumb 
+      include Rforum::Engine.routes.url_helpers
       layout "rforum/rforumdebug"
     def routenav      
     end
@@ -28,14 +29,14 @@ module Rforum
   def render_optional_error_file(status_code)
     status = status_code.to_s
     if ["404","403", "422", "500"].include?(status)
-      render :template => "/errors/#{status}", :format => [:html], :handler => [:erb], :status => status, :layout => "application"
+      render :template => "rforum/errors/#{status}", :format => [:html], :handler => [:erb], :status => status, :layout => "application"
     else
-      render :template => "/errors/unknown", :format => [:html], :handler => [:erb], :status => status, :layout => "application"
+      render :template => "rforum/errors/unknown", :format => [:html], :handler => [:erb], :status => status, :layout => "application"
     end
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to topics_path, :alert => t("common.access_denied")
+    redirect_to rforum.topics_path, :alert => t("common.access_denied")
   end
 
   def notice_success(msg)

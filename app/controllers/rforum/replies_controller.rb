@@ -18,8 +18,8 @@ class  Rforum::RepliesController <  Rforum::RforumController
 
   def edit
     @reply = Rforum::Reply.find(params[:id])
-    drop_breadcrumb(t("menu.topics"), topics_path)
-    drop_breadcrumb t("reply.edit_reply")
+    drop_breadcrumb(t("menu.topics"), rforum.topics_path)
+    drop_breadcrumb t("reply.edit_reply",:use_route => :rforum)
   end
 
   def update

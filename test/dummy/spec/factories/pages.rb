@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :page do
+  factory :page ,:class => Rforum::Page do
     sequence(:slug){|n| "slug#{n}" }
     sequence(:title){|n| "title#{n}" }
     sequence(:body){|n| "body#{n}" }
